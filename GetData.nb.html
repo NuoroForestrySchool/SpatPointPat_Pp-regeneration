@@ -176,77 +176,22 @@ $(document).ready(function () {
 <p>Recovering transects data</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShnb29nbGVzaGVldHMpXG5zdXBwcmVzc01lc3NhZ2VzKGxpYnJhcnkoZHBseXIpKVxuZ3N0IDwtXCJUcmFuc2VjdFBpbnVzUGluZWFcIiBcbmdzX2xzKGdzdClcbmBgYCJ9 -->
-<pre class="r"><code>library(googlesheets)
-suppressMessages(library(dplyr))
-gst &lt;-&quot;TransectPinusPinea&quot; 
-gs_ls(gst)</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Prepare Marks</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShzcWxkZilcbnRfd2luZG93czAgPC0gc3FsZGYoXCJzZWxlY3QgQXJlYSwgbWluKFgpIFhtaW4sIG1heChYKSBYbWF4IGZyb20gcHB3bSBncm91cCBieSBBcmVhXCIsIGRydj0nU1FMaXRlJylcbmBgYCJ9 -->
+<pre class="r"><code>require(sqldf)
+t_windows0 &lt;- sqldf(&quot;select Area, min(X) Xmin, max(X) Xmax from ppwm group by Area&quot;, drv='SQLite')</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibmNvbCI6MTAsIm5yb3ciOjJ9LCJyZGYiOiJINHNJQUFBQUFBQUFCcjFWM1c3VE1CUjJrNWFwUVJ0b2FJL0FIVTFveFpER0hUQnBvKzNvUk5lLzNWUmU0aWFocmgxc0p4bTc0bGw0SEI0QTNxYkYrVEZxekEwZGlGekV4K2Z2Tzk5UnpzbUgwMm5IbWxvQUFBT1lwZ0VNVTRwMVE3NXFvQTZhMlhrTGdQbEVDcG5UNDl5eE1CeGVNVWc0Y3NWbFNHSXVYd2lXbHFQZkxmT2tvNFUvNEM0Vkl0UnVWUitEcFZ0UzFXWlM3RzJMd0R6SXJLKy9IMzc3SVFWNWZuMzZCZWhzR2k2R25HdXA5aTRIdzNkVFY2aGE4cXZRSThVZEphaU1WRXB6ZFBWV0htc3Q0YlAyVE9iemU3ZHZqbWZ4cW4vUzk5cmRjZXZpZER3YmZKcWt3OUR2VHQ1M1JuSHZwSk1HejMvRmRLK2pSWGZtRDNGdjRpY1g3WDR3U0Zwbkw0WjNMMmZITjRQTzlYaVVuZ2RCc2p4TFUxZkQreGdJRWZGWGpzTWpocURIQTRRRXQzMUtmWXhzbDY2Y0JVSWVkMUxLbG9YTjJhVkFKMkpoQWdWeUZqSEc5MGZjZ1Y0VnNjclZWY2dlZFN1STBJbEp5TGtkaWtwUmpyY2JXZVNGNGkrZ2RtR1pRMVhaNFQvcmF3VjF1MWs3Y2Yxbm1QZi9jdi9EcEdSVGJHeTB3YlU4S0tDOVlIQ0Y5RGtuVXFjMmhGVXFIK2EwNXlJVUdLa3RBV01SVUZiZTZoRmlLN1ZPRXNSNFNJbTZ4cEVFUTJwWk5ZdFVTL1JaMlZNK3p6cXM3QkFMeElpTVVLazV3Z3ZsSzQxNWFMWG1KcU9wcmVyZXo5cWJiYjdOWnJNdWxsUEZlWTlHUWxZblhZMXNyVGUwenRTWXBuZ1VreXkxMTNLRG1DeGI3ZkpYVUFQRnMxL0t4cFpzRlpCMTFmV0c2aGtpdnZ3YnFFNWplSVBVUWptUUZISUd0dnkwaUpwQVMycTVMYWlBeXM5eUtWYWFZdkd1ZndLSzVOc2N4QVlBQUE9PSJ9 -->
-<div data-pagedtable>
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["sheet_title"],"name":[1],"type":["chr"],"align":["left"]},{"label":["author"],"name":[2],"type":["chr"],"align":["left"]},{"label":["perm"],"name":[3],"type":["chr"],"align":["left"]},{"label":["version"],"name":[4],"type":["chr"],"align":["left"]},{"label":["updated"],"name":[5],"type":["dttm"],"align":["right"]},{"label":["sheet_key"],"name":[6],"type":["chr"],"align":["left"]},{"label":["ws_feed"],"name":[7],"type":["chr"],"align":["left"]},{"label":["alternate"],"name":[8],"type":["chr"],"align":["left"]},{"label":["self"],"name":[9],"type":["chr"],"align":["left"]},{"label":["alt_key"],"name":[10],"type":["chr"],"align":["left"]}],"data":[{"1":"TransectPinusPinea","2":"scotti","3":"rw","4":"old","5":"2016-12-09 22:08:28","6":"1YIXcgKxB5YumL9Ld1JV-MDVYOqWwSigJWN2UuK92wh0","7":"https://spreadsheets.google.com/feeds/worksheets/1YIXcgKxB5YumL9Ld1JV-MDVYOqWwSigJWN2UuK92wh0/private/full","8":"https://docs.google.com/a/uniss.it/spreadsheets/d/1YIXcgKxB5YumL9Ld1JV-MDVYOqWwSigJWN2UuK92wh0/edit","9":"https://spreadsheets.google.com/feeds/spreadsheets/private/full/1YIXcgKxB5YumL9Ld1JV-MDVYOqWwSigJWN2UuK92wh0","10":"1YIXcgKxB5YumL9Ld1JV-MDVYOqWwSigJWN2UuK92wh0"},{"1":"TransectPinusPinea_v2","2":"scotti","3":"rw","4":"old","5":"2016-12-09 10:33:58","6":"1JZpfJYgSlKWgvM1LhOv-G4Sz6Y5bO2ZVUwHhhvkGwwc","7":"https://spreadsheets.google.com/feeds/worksheets/1JZpfJYgSlKWgvM1LhOv-G4Sz6Y5bO2ZVUwHhhvkGwwc/private/full","8":"https://docs.google.com/a/uniss.it/spreadsheets/d/1JZpfJYgSlKWgvM1LhOv-G4Sz6Y5bO2ZVUwHhhvkGwwc/edit","9":"https://spreadsheets.google.com/feeds/spreadsheets/private/full/1JZpfJYgSlKWgvM1LhOv-G4Sz6Y5bO2ZVUwHhhvkGwwc","10":"1JZpfJYgSlKWgvM1LhOv-G4Sz6Y5bO2ZVUwHhhvkGwwc"}],"options":{"columns":{"min":{},"max":[10],"total":[10]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHBwIDwtIGdzX3RpdGxlKGdzdClcbmBgYCJ9 -->
-<pre class="r"><code>tpp &lt;- gs_title(gst)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiU2hlZXQgc3VjY2Vzc2Z1bGx5IGlkZW50aWZpZWQ6IFwiVHJhbnNlY3RQaW51c1BpbmVhXCJcbiJ9 -->
-<pre><code>Sheet successfully identified: &quot;TransectPinusPinea&quot;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud3NuIDwtIFwiUG9pbnRQYXR0ZXJuV2l0aE1hcmtzXCJcbmNhdChcIlNoZWV0ICdcIiwgd3NuLCBcIidcIiwgaWZlbHNlKHdzbiAlaW4lIGdzX3dzX2xzKHRwcCksXCJcIiwgXCJOT1QgXCIpLCBcImZvdW5kLlwiKVxuYGBgIn0= -->
-<pre class="r"><code>wsn &lt;- &quot;PointPatternWithMarks&quot;
-cat(&quot;Sheet '&quot;, wsn, &quot;'&quot;, ifelse(wsn %in% gs_ws_ls(tpp),&quot;&quot;, &quot;NOT &quot;), &quot;found.&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiU2hlZXQgJyBQb2ludFBhdHRlcm5XaXRoTWFya3MgJyAgZm91bmQuXG4ifQ== -->
-<pre><code>Sheet ' PointPatternWithMarks '  found.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHB3bSA8LSB0cHAgJT4lIGdzX3JlYWQod3M9d3NuKVxuYGBgIn0= -->
-<pre class="r"><code>ppwm &lt;- tpp %&gt;% gs_read(ws=wsn)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQWNjZXNzaW5nIHdvcmtzaGVldCB0aXRsZWQgJ1BvaW50UGF0dGVybldpdGhNYXJrcycuXG4ifQ== -->
-<pre><code>Accessing worksheet titled 'PointPatternWithMarks'.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5Eb3dubG9hZGluZzogMi4zIGtCICAgICBcbkRvd25sb2FkaW5nOiAyLjMga0IgICAgIFxuRG93bmxvYWRpbmc6IDIuMyBrQiAgICAgXG5Eb3dubG9hZGluZzogMi4zIGtCICAgICBcbiJ9 -->
-<pre><code>
-Downloading: 2.3 kB     
-Downloading: 2.3 kB     
-Downloading: 2.3 kB     
-Downloading: 2.3 kB     </code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTm8gZW5jb2Rpbmcgc3VwcGxpZWQ6IGRlZmF1bHRpbmcgdG8gVVRGLTguXG4ifQ== -->
-<pre><code>No encoding supplied: defaulting to UTF-8.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHB3bSRuUGYgPC0gYXMuZmFjdG9yKHBwd20kYE4gcGFsY2hpYClcbnN0cihwcHdtKVxuYGBgIn0= -->
-<pre class="r"><code>ppwm$nPf &lt;- as.factor(ppwm$`N palchi`)
-str(ppwm)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQ2xhc3NlcyDDouKCrMucdGJsX2Rmw6LigqzihKIsIMOi4oKsy5x0YmzDouKCrOKEoiBhbmQgJ2RhdGEuZnJhbWUnOlx0MTAyIG9icy4gb2YgIDE1IHZhcmlhYmxlczpcbiAkIEFyZWEgICAgICAgICA6IGNociAgXCIzXCIgXCIzXCIgXCIzXCIgXCIzXCIgLi4uXG4gJCBJZFBvaW50ICAgICAgOiBjaHIgIFwiQzFcIiBcIkMyXCIgXCJDM1wiIFwiQzRcIiAuLi5cbiAkIFggICAgICAgICAgICA6IG51bSAgNS40IDE0LjYgMjMgMjYuMSAyNi44IDI5LjIgMjYuNiAyOS4yIDMyLjQgMzMuMyAuLi5cbiAkIFkgICAgICAgICAgICA6IG51bSAgOS4zIDQuOCA1LjUgOS45IDQuMyA0IDQuNCA0LjQgMC43IDQuMyAuLi5cbiAkIEggW21dICAgICAgICA6IG51bSAgNy41IDIuNCA2IDMuNiAzLjQgNi43IDMuNiAzLjIgMy4zIDggLi4uXG4gJCBOIHBhbGNoaSAgICAgOiBpbnQgIDEzIDggMTAgOCA3IDExIDggOSA2IDEzIC4uLlxuICQgQXJlYUluc2lkICAgIDogbnVtICA2My42NSA0Ljk1IDIzLjAxIDQuODEgMi44OCAuLi5cbiAkIE5vdGUgICAgICAgICA6IGNociAgTkEgTkEgTkEgTkEgLi4uXG4gJCBOb3RlX2NvZCAgICAgOiBjaHIgIFwiQVwiIFwiQVwiIFwiQVwiIFwiQVwiIC4uLlxuICQgS0VZICAgICAgICAgIDogY2hyICBcIjNDMVwiIFwiM0MyXCIgXCIzQzNcIiBcIjNDNFwiIC4uLlxuICQgbl9lbF9ncnVwcG8gIDogaW50ICAxIDEgMSAxIDEgMSAyIDEgMSAxIC4uLlxuICQgc3VtX2RfY29sbF9zcTogaW50ICA3Mzk2IDE2OSAxNjAwIDEwMCA0OSAxNjAwIDE0OCAxNjkgMzYgMTQ0NCAuLi5cbiAkIG5fZnVzdGkgICAgICA6IGludCAgMyAxIDMgMSAxIDIgMiAxIDEgMiAuLi5cbiAkIHN1bV9kMTMwc3EgICA6IGludCAgMTc4NSA5IDUwOSA0OSAxNiA4NDUgNDkgMjUgNCAxMDI1IC4uLlxuICQgblBmICAgICAgICAgIDogRmFjdG9yIHcvIDEzIGxldmVscyBcIjJcIixcIjNcIixcIjRcIixcIjVcIiwuLjogMTIgNyA5IDcgNiAxMCA3IDggNSAxMiAuLi5cbiJ9 -->
-<pre><code>Classes â€˜tbl_dfâ€™, â€˜tblâ€™ and 'data.frame':   102 obs. of  15 variables:
- $ Area         : chr  &quot;3&quot; &quot;3&quot; &quot;3&quot; &quot;3&quot; ...
- $ IdPoint      : chr  &quot;C1&quot; &quot;C2&quot; &quot;C3&quot; &quot;C4&quot; ...
- $ X            : num  5.4 14.6 23 26.1 26.8 29.2 26.6 29.2 32.4 33.3 ...
- $ Y            : num  9.3 4.8 5.5 9.9 4.3 4 4.4 4.4 0.7 4.3 ...
- $ H [m]        : num  7.5 2.4 6 3.6 3.4 6.7 3.6 3.2 3.3 8 ...
- $ N palchi     : int  13 8 10 8 7 11 8 9 6 13 ...
- $ AreaInsid    : num  63.65 4.95 23.01 4.81 2.88 ...
- $ Note         : chr  NA NA NA NA ...
- $ Note_cod     : chr  &quot;A&quot; &quot;A&quot; &quot;A&quot; &quot;A&quot; ...
- $ KEY          : chr  &quot;3C1&quot; &quot;3C2&quot; &quot;3C3&quot; &quot;3C4&quot; ...
- $ n_el_gruppo  : int  1 1 1 1 1 1 2 1 1 1 ...
- $ sum_d_coll_sq: int  7396 169 1600 100 49 1600 148 169 36 1444 ...
- $ n_fusti      : int  3 1 3 1 1 2 2 1 1 2 ...
- $ sum_d130sq   : int  1785 9 509 49 16 845 49 25 4 1025 ...
- $ nPf          : Factor w/ 13 levels &quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;,..: 12 7 9 7 6 10 7 8 5 12 ...</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Add a new chunk by clicking the <em>Insert Chunk</em> button on the toolbar or by pressing <em>Ctrl+Alt+I</em>.</p>
 <p>When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the <em>Preview</em> button or press <em>Ctrl+Shift+K</em> to preview the HTML file).</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNwYXRpYWwgcGF0dGVybnMgaW4gUGludXMgcGluZWEgcmVnZW5lcmF0aW9uIHRyYW5zZWN0cyINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQpbTm90ZWJvb2sgZGV0YWlsczoNClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLiBXaGVuIHlvdSBleGVjdXRlIGNvZGUgd2l0aGluIHRoZSBub3RlYm9vaywgdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIA0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiBdDQoNClJlY292ZXJpbmcgdHJhbnNlY3RzIGRhdGENCg0KYGBge3J9DQpsaWJyYXJ5KGdvb2dsZXNoZWV0cykNCnN1cHByZXNzTWVzc2FnZXMobGlicmFyeShkcGx5cikpDQpnc3QgPC0iVHJhbnNlY3RQaW51c1BpbmVhIiANCmdzX2xzKGdzdCkNCnRwcCA8LSBnc190aXRsZShnc3QpDQp3c24gPC0gIlBvaW50UGF0dGVybldpdGhNYXJrcyINCmNhdCgiU2hlZXQgJyIsIHdzbiwgIiciLCBpZmVsc2Uod3NuICVpbiUgZ3Nfd3NfbHModHBwKSwiIiwgIk5PVCAiKSwgImZvdW5kLiIpDQpwcHdtIDwtIHRwcCAlPiUgZ3NfcmVhZCh3cz13c24pDQpwcHdtJG5QZiA8LSBhcy5mYWN0b3IocHB3bSRgTiBwYWxjaGlgKQ0Kc3RyKHBwd20pDQpgYGANCg0KQWRkIGEgbmV3IGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqSW5zZXJ0IENodW5rKiBidXR0b24gb24gdGhlIHRvb2xiYXIgb3IgYnkgcHJlc3NpbmcgKkN0cmwrQWx0K0kqLg0KDQpXaGVuIHlvdSBzYXZlIHRoZSBub3RlYm9vaywgYW4gSFRNTCBmaWxlIGNvbnRhaW5pbmcgdGhlIGNvZGUgYW5kIG91dHB1dCB3aWxsIGJlIHNhdmVkIGFsb25nc2lkZSBpdCAoY2xpY2sgdGhlICpQcmV2aWV3KiBidXR0b24gb3IgcHJlc3MgKkN0cmwrU2hpZnQrSyogdG8gcHJldmlldyB0aGUgSFRNTCBmaWxlKS4NCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNwYXRpYWwgcGF0dGVybnMgaW4gUGludXMgcGluZWEgcmVnZW5lcmF0aW9uIHRyYW5zZWN0cyINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQpbTm90ZWJvb2sgZGV0YWlsczoNClRoaXMgaXMgYW4gW1IgTWFya2Rvd25dKGh0dHA6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20pIE5vdGVib29rLiBXaGVuIHlvdSBleGVjdXRlIGNvZGUgd2l0aGluIHRoZSBub3RlYm9vaywgdGhlIHJlc3VsdHMgYXBwZWFyIGJlbmVhdGggdGhlIGNvZGUuIA0KVHJ5IGV4ZWN1dGluZyB0aGlzIGNodW5rIGJ5IGNsaWNraW5nIHRoZSAqUnVuKiBidXR0b24gd2l0aGluIHRoZSBjaHVuayBvciBieSBwbGFjaW5nIHlvdXIgY3Vyc29yIGluc2lkZSBpdCBhbmQgcHJlc3NpbmcgKkN0cmwrU2hpZnQrRW50ZXIqLiBdDQoNClJlY292ZXJpbmcgdHJhbnNlY3RzIGRhdGENCg0KYGBge3J9DQpsaWJyYXJ5KGdvb2dsZXNoZWV0cykNCnN1cHByZXNzTWVzc2FnZXMobGlicmFyeShkcGx5cikpDQpnc3QgPC0iVHJhbnNlY3RQaW51c1BpbmVhIiANCmdzX2xzKGdzdCkNCnRwcCA8LSBnc190aXRsZShnc3QpDQp3c24gPC0gIlBvaW50UGF0dGVybldpdGhNYXJrcyINCmNhdCgiU2hlZXQgJyIsIHdzbiwgIiciLCBpZmVsc2Uod3NuICVpbiUgZ3Nfd3NfbHModHBwKSwiIiwgIk5PVCAiKSwgImZvdW5kLiIpDQpwcHdtIDwtIHRwcCAlPiUgZ3NfcmVhZCh3cz13c24pDQpwcHdtJG5QZiA8LSBhcy5mYWN0b3IocHB3bSRgTiBwYWxjaGlgKQ0Kc3RyKHBwd20pDQpgYGANCg0KUHJlcGFyZSBNYXJrcw0KDQpgYGB7cn0NCnJlcXVpcmUoc3FsZGYpDQp0X3dpbmRvd3MwIDwtIHNxbGRmKCJzZWxlY3QgQXJlYSwgbWluKFgpIFhtaW4sIG1heChYKSBYbWF4IGZyb20gcHB3bSBncm91cCBieSBBcmVhIiwgZHJ2PSdTUUxpdGUnKQ0KDQpgYGANCg0KDQpBZGQgYSBuZXcgY2h1bmsgYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciBieSBwcmVzc2luZyAqQ3RybCtBbHQrSSouDQoNCldoZW4geW91IHNhdmUgdGhlIG5vdGVib29rLCBhbiBIVE1MIGZpbGUgY29udGFpbmluZyB0aGUgY29kZSBhbmQgb3V0cHV0IHdpbGwgYmUgc2F2ZWQgYWxvbmdzaWRlIGl0IChjbGljayB0aGUgKlByZXZpZXcqIGJ1dHRvbiBvciBwcmVzcyAqQ3RybCtTaGlmdCtLKiB0byBwcmV2aWV3IHRoZSBIVE1MIGZpbGUpLg0K</div>
 
 
 
