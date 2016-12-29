@@ -6,26 +6,57 @@ output: html_notebook
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. ]
 
-Recovering transects data
+# Recovering transects data
 
-```{r}
+```{r message = FALSE}
 library(googlesheets)
 suppressMessages(library(dplyr))
-gst <-"TransectPinusPinea" 
+gst <-"TransectPinusPinea"      # GoogleSheetName
 gs_ls(gst)
 tpp <- gs_title(gst)
-wsn <- "PointPatternWithMarks"
+wsn <- "PointPatternWithMarks"  # WorkSheetName
 cat("Sheet '", wsn, "'", ifelse(wsn %in% gs_ws_ls(tpp),"", "NOT "), "found.")
 ppwm <- tpp %>% gs_read(ws=wsn)
 ppwm$nPf <- as.factor(ppwm$`N palchi`)
 str(ppwm)
 ```
 
-Prepare Marks
+# Preparing Marks
 
 ```{r}
 require(sqldf)
 t_windows0 <- sqldf("select Area, min(X) Xmin, max(X) Xmax from ppwm group by Area", drv='SQLite')
+
+```
+
+# Initializing PPP
+
+```{r}
+library(spatstat)
+Areas <- unique(ppwm$Area)
+t_windows <- list()
+for(tid in Areas) t_windows[[tid]] <- ripras(ppwm$X[ppwm$Area==tid],ppwm$Y[ppwm$Area==tid], shape = "rectangle")
+# ripras():  Estimate window from points alone
+
+```
+
+# Test anaysis on one of the transects
+
+```{r}
+tid <- Areas[1]
+trs <- ppp(ppwm$X[ppwm$Area==tid],ppwm$Y[ppwm$Area==tid]
+           , xrange = t_windows[[tid]]$xrange, yrange = c(-10, 10)
+           , marks = ppwm[ppwm$Area==tid, c(5:7, 9, 11:15)])
+# , unlist(t_windows[t_windows$Area==tid,c('X0', 'X1')]), c(-10-marg, 10+marg)
+unitname(trs) <- "m"
+plot(trs, arrange=FALSE, par(mar=rep(3,4)))
+summary(trs)$intensity
+side <- 10 # m - tessellation step
+nx <- floor((trs$window$xrange[2] - trs$window$xrange[1])/side)
+ny <- floor((trs$window$yrange[2] - trs$window$yrange[1])/side)
+Q <- quadratcount(trs, nx, ny)
+plot(trs, arrange=FALSE,cex=.5, pch="+")
+plot(Q, add=TRUE, cex=.5)
 
 ```
 
