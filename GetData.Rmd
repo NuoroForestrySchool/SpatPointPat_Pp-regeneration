@@ -7,12 +7,14 @@ This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute
 Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. ]
 
 # Recovering transects data
+stored in GoogleSheet   'gsn', worksheet name 'wsn'
+archived 2/1/2017	https://www.zenodo.org/deposit/228327	
 
 ```{r message = FALSE}
 library(googlesheets)
 suppressMessages(library(dplyr))
-gst <-"TransectPinusPinea"      # GoogleSheetName
-gs_ls(gst)
+gsn <-"TransectPinusPinea"      # GoogleSheetName
+gs_ls(gsn)
 tpp <- gs_title(gst)
 wsn <- "PointPatternWithMarks"  # WorkSheetName
 cat("Sheet '", wsn, "'", ifelse(wsn %in% gs_ws_ls(tpp),"", "NOT "), "found.")
@@ -22,15 +24,11 @@ str(ppwm)
 ```
 
 # Preparing Marks
-
-```{r}
-require(sqldf)
-t_windows0 <- sqldf("select Area, min(X) Xmin, max(X) Xmax from ppwm group by Area", drv='SQLite')
-
-```
+Some attributes have a single value for each registerede position,
+other ones can have more than on value. These these have been aggregated in the worksheet.
 
 # Initializing PPP
-
+Spatia patterns windows are, partially, undefined (width=10m, length: open) and has to be estimated!!
 ```{r}
 library(spatstat)
 Areas <- unique(ppwm$Area)
