@@ -15,7 +15,7 @@ library(googlesheets)
 suppressMessages(library(dplyr))
 gsn <-"TransectPinusPinea"      # GoogleSheetName
 gs_ls(gsn)
-tpp <- gs_title(gst)
+tpp <- gs_title(gsn)
 wsn <- "PointPatternWithMarks"  # WorkSheetName
 cat("Sheet '", wsn, "'", ifelse(wsn %in% gs_ws_ls(tpp),"", "NOT "), "found.")
 ppwm <- tpp %>% gs_read(ws=wsn)
