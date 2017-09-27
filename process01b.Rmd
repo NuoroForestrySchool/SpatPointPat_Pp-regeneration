@@ -1,0 +1,131 @@
+---
+title: "Spatial patterns in Pinus pinea regeneration transects"
+output:
+  html_notebook: default
+  html_document: default
+---
+[Notebook details:
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. ]
+
+# Recovering transects data
+stored in GoogleSheet   'gsn', worksheet name 'wsn'
+
+archived 2/1/2017	https://www.zenodo.org/deposit/228327	
+
+```{r}
+library(googlesheets)
+suppressMessages(library(dplyr))
+gst <-"TransectPinusPinea" 
+gs_ls(gst)
+tpp <- gs_title(gst)
+wsn <- "PointPatternWithMarks"
+cat("Sheet '", wsn, "'", ifelse(wsn %in% gs_ws_ls(tpp),"", "NOT "), "found.")
+ppwm <- tpp %>% gs_read(ws=wsn)
+ppwm$nPf <- as.factor(ppwm$`N palchi`)
+str(ppwm)
+```
+# Preparing Marks
+Some positions are occupied by a single stem, some correspond to stem bunches. Some attributes  can  hence have more than one value. These have been aggregated in the worksheet as counts and sums or averages.
+
+# Initializing PPP and SO list
+Spatial patterns windows are, partially, undefined. The width is fixed to 10m while the length is open and has to be estimated!!
+```{r}
+library(spatstat)
+Areas <- unique(ppwm$Area)
+t_windows <- list()
+for(tid in Areas) t_windows[[tid]] <- ripras(ppwm$X[ppwm$Area==tid],ppwm$Y[ppwm$Area==tid], shape = "rectangle")
+# ripras():  Estimate window from points alone
+trss <- solist()
+# To display transects as seen from the see
+#    exchange x and y
+#    reflect on the negative side the y ==> K=-1
+K <- -1
+for(tid in Areas) {
+  trs <- ppp(ppwm$Y[ppwm$Area==tid],K*c(ppwm$X[ppwm$Area==tid])
+             , yrange = range(K*t_windows[[tid]]$xrange), xrange = c(-10, 10)
+             , marks = ppwm[ppwm$Area==tid, c(5:7, 9, 11:15)])
+  unitname(trs) <- "m"
+#  print(paste(tid,class(trs)))
+  trss[[length(trss)+1]] <- trs
+}
+names(trss)=paste("Trs-",Areas,sep="")
+```
+
+# Display all transects
+
+```{r}
+trssum <- as.solist(lapply(trss, unmark))
+summary(trssum)
+plot(trssum, nrows=1, equal.scales=T, valign=T, main = "", hsep=4, cex.main=.7)
+Axis(trss, side=4, cex.axis=.6, at=seq(100,20,-20), labels = seq(0,80,20))
+title(main="Transetti", line = 0)
+```
+
+
+# Content analysis on one of the transects
+
+```{r}
+tid <- names(trss)[1]
+trs <- trss[[tid]]
+
+ulbl <- trs$window$units$singular
+cat(" Marked planar point pattern\n",
+    "     number  of points =", trs$n, "\n",
+    "     average intensity =", summary(trs)$intensity,"points per square",ulbl,"\n",
+    "     Window: rectangle = [", trs$window$xrange[1], trs$window$xrange[2],"] x ["
+                       , trs$window$yrange[1], trs$window$yrange[2],"]",ulbl,"\n",
+    "     Window       area =", summary(trs)$window$area,"square",ulbl)
+
+plot(trs, cex.main=1.1, main=paste("Marks in",tid), hsep=0, par(mar=c(0,0,2,0), cex=.6))
+
+summary(trs)$intensity
+side <- 10 # m - tessellation step
+nx <- floor((trs$window$xrange[2] - trs$window$xrange[1])/side)
+ny <- floor((trs$window$yrange[2] - trs$window$yrange[1])/side)
+Q <- quadratcount(trs, nx, ny)
+plot(unmark(trs), main=paste(tid, "- QUADRATS"), arrange=FALSE, par(mar=c(0,0,2,0)))
+plot(Q, add=TRUE, cex=1.4)
+```
+
+# Analysis of spatial characters
+
+```{r}
+plot(as.solist(lapply(trss, density)), nrows=1, equal.scales=T, valign=T, main = "", hsep=2, cex.main=.7
+     , par(mar=c(0,0,2,0)), equal.ribbon=TRUE,
+     panel.end=function(i,y,...){contour(y, ...)})
+title(main="Density distribution", line =-1)
+
+plot(as.anylist(lapply(trss, Kest)), ncols=1, legend=F
+     , mar.panel=c(0,0,3,0), main = "Ripley’s K function")
+plot(as.anylist(lapply(trss, Lest)), ncols=1, legend=F, mar.panel=c(0,0,3,0), main = "Ripley’s L function")
+#plot(Kinhom(trs,correction=c("border")))
+
+```
+
+```{r}
+library("PerformanceAnalytics", lib.loc="~/R/win-library/3.3")
+ow <- options("warn")[[1]]
+options(warn = -1)
+att <- c(2,1,6,8,3,7,5)
+for(i in 1:4) chart.Correlation(marks(trss[[i]])[att]
+                                , histogram=TRUE, pch=19
+                                , main=names(trss)[i])
+options(warn = ow)
+
+pmkc <- function(x, m) plot(main=paste(names(trss)[x],":"
+                                ,names(trss[[1]]$marks)[m])
+                     ,markcorr(setmarks(unmark(trss[[x]])
+                                       ,marks(trss[[x]])[[m]])))
+
+for(m in att) {
+  for(i in 1:length(trss)) pmkc(i, m)
+}
+
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).

@@ -1,0 +1,65 @@
+---
+title: "Spatial patterns in Pinus pinea regeneration transects"
+output: html_notebook
+---
+[Notebook details:
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. ]
+
+# Recovering transects data
+stored in GoogleSheet   'gsn', worksheet name 'wsn'
+
+archived 2/1/2017	https://www.zenodo.org/deposit/228327	
+
+```{r}
+library(googlesheets)
+suppressMessages(library(dplyr))
+gst <-"TransectPinusPinea" 
+gs_ls(gst)
+tpp <- gs_title(gst)
+wsn <- "PointPatternWithMarks"
+cat("Sheet '", wsn, "'", ifelse(wsn %in% gs_ws_ls(tpp),"", "NOT "), "found.")
+ppwm <- tpp %>% gs_read(ws=wsn)
+ppwm$nPf <- as.factor(ppwm$`N palchi`)
+str(ppwm)
+```
+# Preparing Marks
+Some positions are occupied by a single stem, some correspond to stem bunches. Some attributes  can  hence have more than one value. These have been aggregated in the worksheet as counts and sums or averages.
+
+# Initializing PPP
+Spatial patterns windows are, partially, undefined. The width is fixed to 10m while the length is open and has to be estimated!!
+```{r}
+library(spatstat)
+Areas <- unique(ppwm$Area)
+t_windows <- list()
+for(tid in Areas) t_windows[[tid]] <- ripras(ppwm$X[ppwm$Area==tid],ppwm$Y[ppwm$Area==tid], shape = "rectangle")
+# ripras():  Estimate window from points alone
+
+```
+
+# Test anaysis on one of the transects
+
+```{r}
+tid <- Areas[1]
+trs <- ppp(ppwm$X[ppwm$Area==tid],ppwm$Y[ppwm$Area==tid]
+           , xrange = t_windows[[tid]]$xrange, yrange = c(-10, 10)
+           , marks = ppwm[ppwm$Area==tid, c(5:7, 9, 11:15)])
+# , unlist(t_windows[t_windows$Area==tid,c('X0', 'X1')]), c(-10-marg, 10+marg)
+unitname(trs) <- "m"
+plot(trs, cex.main=.6, par(mar=rep(0,4), oma=c(0,0,0,0)), main="")
+title(main=paste("Transetto",tid),line=-4)
+
+summary(trs)$intensity
+side <- 10 # m - tessellation step
+nx <- floor((trs$window$xrange[2] - trs$window$xrange[1])/side)
+ny <- floor((trs$window$yrange[2] - trs$window$yrange[1])/side)
+Q <- quadratcount(trs, nx, ny)
+plot(trs, arrange=FALSE,cex=.5, pch="+")
+plot(Q, add=TRUE, cex=.5)
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
